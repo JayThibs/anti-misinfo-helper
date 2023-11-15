@@ -1,9 +1,11 @@
 import os
+from dotenv import load_dotenv
 import openai
+from openai import OpenAI
 from typing import List
 from .fuzzy_matching import find_similar_words_preprocessed_modified
 
-openai.api_key = os.getenv("OPENAI_API_KEY")
+load_dotenv()
 
 system_message_for_review = (
     "You are a highly advanced AI assistant tasked with evaluating tweets. Analyze the content critically for accuracy, relevance, and potential impact. "
@@ -15,7 +17,7 @@ system_message_for_review = (
     " - Score 41-60: The tweet has a mix of accurate and questionable information or lacks context. (e.g., 'Chocolate causes acne in teenagers.') "
     " - Score 61-80: The tweet contains misleading or unverified information. (e.g., 'Drinking coffee is linked to heart disease.') "
     " - Score 81-100: The tweet is likely spreading misinformation or false claims. (e.g., 'Vaccines cause autism.') "
-    "In your explanation, justify the score based on the tweet's accuracy, context, and potential implications. Ensure your analysis is objective and factual."
+    "Keep the explanation concise and neutral, focusing on the content of the tweet. One or two sentences should be sufficient. "
 )
 
 # Example output for review: "Analysis Score: 85. The tweet contains several claims that are potentially misleading
@@ -48,7 +50,7 @@ def analyze_tweet_with_lm(tweet: str, model: str, system_message_content: str) -
     Returns:
     str: Analysis result or a note synthesized by the language model.
     """
-    client = openai.OpenAI(api_key="YOUR_OPENAI_API_KEY")
+    client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
     # System message guiding the language model
     system_message = {"role": "system", "content": system_message_content}
@@ -58,10 +60,11 @@ def analyze_tweet_with_lm(tweet: str, model: str, system_message_content: str) -
 
     # Create a chat completion with the OpenAI client
     response = client.chat.completions.create(
-        model=model, messages=[system_message, user_message]
+        model=model,
+        messages=[system_message, user_message],
+        temperature=0.1,
     )
-
-    return response.choices[0].message["content"]
+    return response.choices[0].message.content
 
 
 import re
@@ -102,9 +105,8 @@ def analyze_tweet(
         return "Tweet does not meet the like threshold for analysis.", 0
 
 
-def assist_with_community_note(tweet: str, use_gpt4: bool) -> str:
+def assist_with_community_note(tweet: str, model: str) -> str:
     """
     Provide assistance for writing a community note, optionally using GPT-4.
     """
-    model = "gpt-4-turbo" if use_gpt4 else "gpt-3.5-turbo"
     return analyze_tweet_with_lm(tweet, model, system_message_for_assistance)
