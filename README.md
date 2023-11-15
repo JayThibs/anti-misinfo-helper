@@ -32,3 +32,4 @@ python main.py
 
 - **Community Note Integration**: Integrate the tool directly with social media platforms to provide real-time assistance in community note creation.
 - **Expanding Keyword/Contentious Issues Database**: Continually update and expand the keyword database to cover a broader range of topics and misinformation types.
+- **Expand to Other Social Media Platforms**: Expand the tool to other social media platforms such as YouTube, Facebook, Instagram, and TikTok.
