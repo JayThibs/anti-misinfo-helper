@@ -19,9 +19,10 @@ for i, tweet in enumerate(tweets):
     print("\n", "-" * 50)
 
 # Decide further actions based on the score
-for tweet, analysis_result, score, likes in potential_misinfo_tweets:
+for i, (tweet, analysis_result, score, likes) in enumerate(potential_misinfo_tweets):
     # TODO: Sort queue by score and likes
     note_assistance = assist_with_community_note(
         tweet, "gpt-4"
     )  # use gpt-4-1106-preview when available
-    print("\n", "Assisted Community Note:", note_assistance)
+    print("\n", f"Tweet {i+1}:", tweet)
+    print("Assisted Community Note:", note_assistance)
