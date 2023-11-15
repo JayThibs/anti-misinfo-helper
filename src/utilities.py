@@ -1,4 +1,5 @@
 import numpy as np
+import openai
 
 
 def get_text_embedding(text: str) -> np.ndarray:

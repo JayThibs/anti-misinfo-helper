@@ -1,9 +1,9 @@
-from tweet_analysis import analyze_tweet, assist_with_community_note
-from data_preparation import load_keywords
+from src.tweet_analysis import analyze_tweet, assist_with_community_note
+from src.data_preparation import load_keywords
 
 # Load keywords and contentious issues
-sensitive_words = load_keywords("keywords.csv")
-contentious_issues = load_keywords("contentious_issues.csv")
+sensitive_words = load_keywords("data/keywords.csv")
+contentious_issues = load_keywords("data/contentious_issues.csv")
 
 # Example usage
 tweet = "Example tweet content."
